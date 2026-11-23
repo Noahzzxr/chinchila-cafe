@@ -1,0 +1,137 @@
+@import "tailwindcss";
+
+/* ──────────────────────────────────────────────
+   Tokens da marca (Tailwind v4 @theme)
+   Geram utilitários como bg-carmim, text-ouro etc.
+   ────────────────────────────────────────────── */
+@theme {
+  --color-carmim: #c0103c;
+  --color-carmim-escuro: #8e0b2c;
+  --color-ouro: #d4a94f;
+  --color-ouro-claro: #f3d58a;
+  /* Dourado escurecido apenas para TEXTO sobre fundos claros (contraste AA) */
+  --color-ouro-texto: #7d5c14;
+  --color-creme: #fbf7f4;
+  --color-creme-escuro: #f3ebe4;
+  --color-chinchila: #bfc2c7;
+  --color-chinchila-escuro: #8a8d93;
+  /* Cinza para texto secundário sobre creme (contraste AA) */
+  --color-chinchila-texto: #5c5f66;
+  --color-tinta: #2b1b1f;
+  --color-framboesa: #d21f3c;
+  --color-rosa: #f7c9d3;
+
+  --font-display: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
+  --font-script: var(--font-great-vibes), "Great Vibes", cursive;
+  --font-sans: var(--font-lato), "Lato", system-ui, sans-serif;
+
+  --radius-card: 1.25rem;
+
+  --shadow-suave: 0 10px 30px -12px rgb(43 27 31 / 0.18);
+  --shadow-elevada: 0 22px 45px -18px rgb(142 11 44 / 0.35);
+
+  --animate-breathe: breathe 6s ease-in-out infinite;
+  --animate-paw: paw-in 0.6s ease-out both;
+
+  @keyframes breathe {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+  }
+  @keyframes paw-in {
+    from { opacity: 0; transform: translateY(8px) scale(0.6) rotate(var(--paw-rot, 0deg)); }
+    to { opacity: var(--paw-opacity, 0.14); transform: translateY(0) scale(1) rotate(var(--paw-rot, 0deg)); }
+  }
+}
+
+/* ──────────────────────────────────────────────
+   Base
+   ────────────────────────────────────────────── */
+html {
+  scroll-behavior: smooth;
+  /* Compensa o header fixo ao navegar por âncoras */
+  scroll-padding-top: 5.5rem;
+}
+
+body {
+  background-color: var(--color-creme);
+  color: var(--color-tinta);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Foco visível e consistente em toda a página */
+:focus-visible {
+  outline: 3px solid var(--color-ouro);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+::selection {
+  background: var(--color-rosa);
+  color: var(--color-tinta);
+}
+
+/* ──────────────────────────────────────────────
+   Utilitários da marca
+   ────────────────────────────────────────────── */
+
+/* Texto com gradiente dourado do logo */
+@utility text-ouro-gradiente {
+  background-image: linear-gradient(100deg, var(--color-ouro) 0%, var(--color-ouro-claro) 50%, var(--color-ouro) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Linha dourada usada em divisores e bordas */
+@utility bg-ouro-gradiente {
+  background-image: linear-gradient(90deg, var(--color-ouro), var(--color-ouro-claro), var(--color-ouro));
+}
+
+/* Títulos de seção espaçados, como no cardápio impresso ("S A L G A D O S") */
+@utility titulo-espacado {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: 0.32em;
+  font-weight: 600;
+}
+
+/* Textura de patinhas rosadas semitransparentes para fundos carmim */
+@utility textura-patinhas {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'%3E%3Cg fill='%23f7c9d3' fill-opacity='0.13'%3E%3Cg transform='translate(30 34) rotate(-18)'%3E%3Cellipse cx='0' cy='10' rx='11' ry='9'/%3E%3Ccircle cx='-11' cy='-5' r='4.5'/%3E%3Ccircle cx='-3' cy='-11' r='4.5'/%3E%3Ccircle cx='6' cy='-11' r='4.5'/%3E%3Ccircle cx='13' cy='-4' r='4.5'/%3E%3C/g%3E%3Cg transform='translate(128 104) rotate(22)'%3E%3Cellipse cx='0' cy='10' rx='11' ry='9'/%3E%3Ccircle cx='-11' cy='-5' r='4.5'/%3E%3Ccircle cx='-3' cy='-11' r='4.5'/%3E%3Ccircle cx='6' cy='-11' r='4.5'/%3E%3Ccircle cx='13' cy='-4' r='4.5'/%3E%3C/g%3E%3Cg transform='translate(58 150) rotate(8) scale(0.7)'%3E%3Cellipse cx='0' cy='10' rx='11' ry='9'/%3E%3Ccircle cx='-11' cy='-5' r='4.5'/%3E%3Ccircle cx='-3' cy='-11' r='4.5'/%3E%3Ccircle cx='6' cy='-11' r='4.5'/%3E%3Ccircle cx='13' cy='-4' r='4.5'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  background-size: 180px 180px;
+}
+
+/* ──────────────────────────────────────────────
+   Animação de entrada ao rolar (ver components/Reveal.tsx)
+   ────────────────────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+.reveal[data-visible="true"] {
+  opacity: 1;
+  transform: none;
+}
+
+/* Sem JS (ou antes da hidratação em crawlers) o conteúdo continua visível */
+@media (scripting: none) {
+  .reveal { opacity: 1; transform: none; }
+}
+
+/* ──────────────────────────────────────────────
+   Respeita quem prefere menos movimento
+   ────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .reveal { opacity: 1; transform: none; }
+}
